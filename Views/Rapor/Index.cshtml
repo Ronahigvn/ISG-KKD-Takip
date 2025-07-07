@@ -1,0 +1,33 @@
+@model IEnumerable<ISGKkdTakip.Models.Rapor>
+
+@{
+    ViewData["Title"] = "Raporlar";
+}
+
+<h1>Raporlar Listesi</h1>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Mekan</th>
+            <th>Uygunsuzluk</th>
+            <th>Toplam Kişi</th>
+            <th>Ekipman Kullanan</th>
+            <th>Tarih</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var rapor in Model)
+        {
+            <tr>
+                <td>@rapor.Mekan.Ad</td>
+                <td>@rapor.Uygunsuzluk.Tip</td>
+                <td>@rapor.ToplamKisi</td>
+                <td>@rapor.EkipmanKullanan</td>
+                <td>@rapor.Tarih.ToString("dd.MM.yyyy")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="@Url.Action("Create")" class="btn btn-primary">Yeni Rapor Ekle</a>
