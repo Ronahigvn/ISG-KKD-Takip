@@ -221,3 +221,5 @@
 /home/ronahi/Masaüstü/ISG-KKD-Takip/ISGKkdTakip/obj/Debug/net9.0/ISGKkdTakip.csproj.AssemblyReference.cache
 /home/ronahi/Masaüstü/ISG-KKD-Takip/ISGKkdTakip/obj/Debug/net9.0/ISGKkdTa.930968ED.Up2Date
 /home/ronahi/Masaüstü/ISG-KKD-Takip/ISGKkdTakip/bin/Debug/net9.0/venv/lib/python3.12/site-packages/scipy/stats/tests/data/studentized_range_mpmath_ref.json
+/home/ronahi/Masaüstü/ISG-KKD-Takip/ISGKkdTakip/bin/Debug/net9.0/Newtonsoft.Json.dll
+/home/ronahi/Masaüstü/ISG-KKD-Takip/ISGKkdTakip/bin/Debug/net9.0/myenv/lib/python3.12/site-packages/scipy/stats/tests/data/studentized_range_mpmath_ref.json

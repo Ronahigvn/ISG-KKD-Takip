@@ -1,33 +1,74 @@
-@model IEnumerable<ISGKkdTakip.Models.Rapor>
-
 @{
-    ViewData["Title"] = "Raporlar";
+    ViewData["Title"] = "KKD Raporu";
 }
 
-<h1>Raporlar Listesi</h1>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KKD Tahmin Raporu</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      max-width: 700px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .stats {
+      margin-bottom: 40px;
+      font-size: 18px;
+    }
+    .stats p {
+      margin: 10px 0;
+    }
+    canvas {
+      background: #fafafa;
+      border-radius: 8px;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>📊 KKD Tespit Raporu</h1>
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Mekan</th>
-            <th>Uygunsuzluk</th>
-            <th>Toplam Kişi</th>
-            <th>Ekipman Kullanan</th>
-            <th>Tarih</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var rapor in Model)
-        {
-            <tr>
-                <td>@rapor.Mekan.Ad</td>
-                <td>@rapor.Uygunsuzluk.Tip</td>
-                <td>@rapor.ToplamKisi</td>
-                <td>@rapor.EkipmanKullanan</td>
-                <td>@rapor.Tarih.ToString("dd.MM.yyyy")</td>
-            </tr>
+   <div class="bg-white rounded-lg shadow-md p-6">
+        <p><strong>Toplam Tespit Edilen Kişi:</strong> @ViewBag.TotalPeople</p>
+        <p><strong>Kask Kullanan:</strong> @ViewBag.Hardhats</p>
+        <p><strong>Yelek Giyen:</strong> @ViewBag.Vests</p>
+        <p><strong>Gözlük Takan:</strong> @ViewBag.Goggles</p>
+     
+    </div>
+
+  <canvas id="chart" width="400" height="200"></canvas>
+
+  <script>
+    const ctx = document.getElementById('chart').getContext('2d');
+    const chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['KKD Kullanan', 'KKD Kullanmayan'],
+        datasets: [{
+          label: 'Kişi Sayısı',
+          data: [@ViewBag.WithKkd, @ViewBag.WithoutKkd],
+          backgroundColor: ['#4caf50', '#f44336']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          y: { beginAtZero: true }
         }
-    </tbody>
-</table>
-
-<a href="@Url.Action("Create")" class="btn btn-primary">Yeni Rapor Ekle</a>
+      }
+    });
+  </script>
+</body>
+</html>

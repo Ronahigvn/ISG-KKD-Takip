@@ -1,0 +1,5 @@
+myenv/
+bin/
+obj/
+*.db
+__pycache__/

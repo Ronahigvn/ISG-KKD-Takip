@@ -23,6 +23,10 @@ namespace ISGKkdTakip.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Aciklama")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Ad")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -68,7 +72,11 @@ namespace ISGKkdTakip.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Tip")
+                    b.Property<string>("Aciklama")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Ad")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

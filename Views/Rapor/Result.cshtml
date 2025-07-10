@@ -1,0 +1,198 @@
+
+@* @{
+    ViewBag.Title = "KKD Analiz Sonucu";
+}
+<h2>🧾 KKD Analiz Sonucu</h2>
+<p>👥 Toplam Kişi: @ViewBag.TotalPeople</p>
+<p>✅ KKD Kullanan: @ViewBag.WithKkd</p>
+<p>❌ KKD Kullanmayan: @ViewBag.WithoutKkd</p> *@
+@* 
+<h1>📊 KKD Tespit Raporu</h1>
+<p>👥 Toplam Kişi: <strong>@ViewBag.TotalPeople</strong></p>
+<p>✅ KKD Kullanan: <strong>@ViewBag.WithKkd</strong></p>
+<p>❌ KKD Kullanmayan: <strong>@ViewBag.WithoutKkd</strong></p> *@
+@* <p>Toplam kişi (debug): @ViewBag.TotalPeople</p>
+<p>KKD Kullanan (debug): @ViewBag.WithKkd</p>
+<p>KKD Kullanmayan (debug): @ViewBag.WithoutKkd</p>
+ *@
+@{
+    ViewData["Title"] = "KKD Tespit Sonuçları";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // varsa layout'unuz
+}
+
+@* <!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <title>KKD Tespit Sonuçları</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 2rem;
+            background-color: #f9f9f9;
+        }
+        .chart-container {
+            max-width: 600px;
+            margin: auto;
+        }
+        .summary {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="summary">
+        <h2>🛠️ KKD Tespit Sonuçları</h2>
+        <p><strong>Toplam Tespit:</strong> @ViewBag.TotalPeople</p>
+        <p><strong>Kask:</strong> @ViewBag.Hardhats</p>
+        <p><strong>Yelek:</strong> @ViewBag.Vests</p>
+        <p><strong>Gözlük:</strong> @ViewBag.Goggles</p>
+        <p><strong>Maske:</strong> @ViewBag.Masks</p>
+    </div>
+
+    <div class="chart-container">
+        <canvas id="kkdChart"></canvas>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('kkdChart').getContext('2d');
+
+        const kkdChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Kask', 'Yelek', 'Gözlük', 'Maske'],
+                datasets: [{
+                    label: 'KKD Dağılımı',
+                    data: [
+                        @ViewBag.Hardhats ?? 0,
+                        @ViewBag.Vests ?? 0,
+                        @ViewBag.Goggles ?? 0,
+                        @ViewBag.Masks ?? 0
+                    ],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)',  // Kask
+                        'rgba(54, 162, 235, 0.7)',  // Yelek
+                        'rgba(255, 206, 86, 0.7)',  // Gözlük
+                        'rgba(75, 192, 192, 0.7)'   // Maske
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Kişisel Koruyucu Donanım Dağılımı'
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
+ *@
+
+
+ @{
+    ViewData["Title"] = "KKD Tespit Sonuçları";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // varsa layout'unuz
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <title>KKD Tespit Sonuçları</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 2rem;
+            background-color: #f9f9f9;
+        }
+        .chart-container {
+            max-width: 600px;
+            margin: auto;
+        }
+        .summary {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="summary">
+        <h2>🛡️ KKD Tespit Sonuçları</h2>
+        <p><strong>Toplam Tespit:</strong> @ViewBag.TotalPeople</p>
+        <p><strong>Kask:</strong> @ViewBag.Hardhats</p>
+        <p><strong>Yelek:</strong> @ViewBag.Vests</p>
+        <p><strong>Gözlük:</strong> @ViewBag.Goggles</p>
+        <p><strong>Maske:</strong> @ViewBag.Masks</p>
+    </div>
+
+    <div class="chart-container">
+        <canvas id="kkdDonutChart"></canvas>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('kkdDonutChart').getContext('2d');
+
+        const kkdDonutChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Kask', 'Yelek', 'Gözlük', 'Maske'],
+                datasets: [{
+                    label: 'KKD Dağılımı',
+                    data: [
+                        @ViewBag.Hardhats ?? 0,
+                        @ViewBag.Vests ?? 0,
+                        @ViewBag.Goggles ?? 0,
+                        @ViewBag.Masks ?? 0
+                    ],
+                    backgroundColor: [
+                        '#FF6384', // Kask
+                        '#36A2EB', // Yelek
+                        '#FFCE56', // Gözlük
+                        '#4BC0C0'  // Maske
+                    ],
+                    borderColor: '#fff',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                cutout: '60%', // Donut efekti burada!
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Kişisel Koruyucu Donanım Dağılımı'
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

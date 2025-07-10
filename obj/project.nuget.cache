@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "9JxfI20QkiU=",
+  "dgSpecHash": "gQ7/57azsRk=",
   "success": true,
   "projectFilePath": "/home/ronahi/Masaüstü/ISG-KKD-Takip/ISGKkdTakip/ISGKkdTakip.csproj",
   "expectedPackageFiles": [
@@ -34,6 +34,7 @@
     "/home/ronahi/.nuget/packages/microsoft.extensions.options/9.0.6/microsoft.extensions.options.9.0.6.nupkg.sha512",
     "/home/ronahi/.nuget/packages/microsoft.extensions.primitives/9.0.6/microsoft.extensions.primitives.9.0.6.nupkg.sha512",
     "/home/ronahi/.nuget/packages/mono.texttemplating/3.0.0/mono.texttemplating.3.0.0.nupkg.sha512",
+    "/home/ronahi/.nuget/packages/newtonsoft.json/13.0.3/newtonsoft.json.13.0.3.nupkg.sha512",
     "/home/ronahi/.nuget/packages/sqlitepclraw.bundle_e_sqlite3/2.1.10/sqlitepclraw.bundle_e_sqlite3.2.1.10.nupkg.sha512",
     "/home/ronahi/.nuget/packages/sqlitepclraw.core/2.1.10/sqlitepclraw.core.2.1.10.nupkg.sha512",
     "/home/ronahi/.nuget/packages/sqlitepclraw.lib.e_sqlite3/2.1.10/sqlitepclraw.lib.e_sqlite3.2.1.10.nupkg.sha512",

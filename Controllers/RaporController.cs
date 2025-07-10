@@ -1,43 +1,77 @@
-using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using ISGKkdTakip.Models;
+using System.Linq;
+using ISGKkdTakip.Data;
 
-namespace ISGKkdTakip.Controllers
+
+public class RaporController : Controller
 {
-    public class RaporController : Controller
+    private readonly ApplicationDbContext _context;
+
+    public RaporController(ApplicationDbContext context)
     {
-        private readonly HttpClient _httpClient;
+        _context = context;
+    }
 
-        public RaporController(IHttpClientFactory httpClientFactory)
+    // GET: Rapor/Index — Rapor listesini ve grafik için verileri göster
+    public IActionResult Index()
+    {
+        var toplam = _context.Raporlar.Sum(r => r.ToplamKisi);
+        var kullanan = _context.Raporlar.Sum(r => r.EkipmanKullanan);
+        var kullanmayan = toplam - kullanan;
+
+        ViewBag.TotalPeople = toplam;
+        ViewBag.WithKkd = kullanan;
+        ViewBag.WithoutKkd = kullanmayan;
+
+        var raporlar = _context.Raporlar.ToList();
+        return View(raporlar);
+    }
+
+    // POST: Rapor/CreateFromResult — Result view’dan gelen tahminle kaydet
+    [HttpPost]
+    public IActionResult CreateFromResult(int toplamKisi, int ekipmanKullanan)
+    {
+        // Örnek mekan ve uygunsuzluk id’leri (istersen kullanıcıdan veya sabit)
+        int mekanId = 1;
+        int uygunsuzlukId = 1;
+
+        var rapor = new Rapor
         {
-            _httpClient = httpClientFactory.CreateClient();
+            ToplamKisi = toplamKisi,
+            EkipmanKullanan = ekipmanKullanan,
+            MekanId = mekanId,
+            UygunsuzlukId = uygunsuzlukId
+        };
+
+        _context.Raporlar.Add(rapor);
+        _context.SaveChanges();
+
+        return RedirectToAction("Index");
+    }
+
+    // GET: Rapor/Create (Opsiyonel manuel ekleme için)
+    public IActionResult Create()
+    {
+        ViewBag.Mekanlar = new SelectList(_context.Mekanlar, "Id", "Ad");
+        ViewBag.Uygunsuzluklar = new SelectList(_context.Uygunsuzluklar, "Id", "Tip");
+        return View();
+    }
+
+    // POST: Rapor/Create — manuel kayıt için
+    [HttpPost]
+    public IActionResult Create(Rapor model)
+    {
+        if (ModelState.IsValid)
+        {
+            _context.Raporlar.Add(model);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
 
-        [HttpPost("api/uploadimage")]
-        public async Task<IActionResult> UploadImage(IFormFile file)
-        {
-            if (file == null || file.Length == 0)
-                return BadRequest("Dosya yüklenmedi.");
-
-            var fastApiUrl = "http://127.0.0.1:8000/tahmin";
-
-            using var content = new MultipartFormDataContent();
-
-            using var stream = file.OpenReadStream();
-            var streamContent = new StreamContent(stream);
-            streamContent.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
-
-            content.Add(streamContent, "file", file.FileName);
-
-            var response = await _httpClient.PostAsync(fastApiUrl, content);
-
-            if (!response.IsSuccessStatusCode)
-                return StatusCode((int)response.StatusCode, "FastAPI servisi hata verdi.");
-
-            var resultJson = await response.Content.ReadAsStringAsync();
-
-            return Content(resultJson, "application/json");
-        }
+        ViewBag.Mekanlar = new SelectList(_context.Mekanlar, "Id", "Ad", model.MekanId);
+        ViewBag.Uygunsuzluklar = new SelectList(_context.Uygunsuzluklar, "Id", "Tip", model.UygunsuzlukId);
+        return View(model);
     }
 }
