@@ -116,9 +116,18 @@ from fastapi import FastAPI, UploadFile, File
 from fastapi.responses import JSONResponse
 from inference_sdk import InferenceHTTPClient
 import shutil, os
+from fastapi.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # İstersen sadece ASP.NET portunu yazabilirsin
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+) 
 # ► Roboflow istemcin
 CLIENT = InferenceHTTPClient(
     api_url="https://serverless.roboflow.com",
@@ -160,3 +169,8 @@ async def analyze_image(file: UploadFile = File(...)):
         # 4️⃣ – Geçici dosyayı sil
         if os.path.exists(temp_path):
             os.remove(temp_path)
+
+
+@app.get("/annotated-image/")
+async def get_annotated_image():
+    return FileResponse("annotated_output.jpeg", media_type="image/jpeg")

@@ -107,7 +107,7 @@
 </body>
 </html>
  *@
-
+@* 
 
  @{
     ViewData["Title"] = "KKD Tespit Sonuçları";
@@ -196,3 +196,95 @@
 
 </body>
 </html>
+ *@
+
+ @{
+    ViewData["Title"] = "KKD Tespit Sonuçları";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 2rem;
+            background-color: #f9f9f9;
+        }
+
+        .chart-container {
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .summary {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+            color: #333;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('kkdDonutChart').getContext('2d');
+
+        const kkdDonutChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Kask', 'Yelek', 'Gözlük', 'Maske'],
+                datasets: [{
+                    label: 'KKD Dağılımı',
+                    data: [
+                        @ViewBag.Hardhats ?? 0,
+                        @ViewBag.Vests ?? 0,
+                        @ViewBag.Goggles ?? 0,
+                        @ViewBag.Masks ?? 0
+                    ],
+                    backgroundColor: [
+                        '#FF6384', // Kask
+                        '#36A2EB', // Yelek
+                        '#FFCE56', // Gözlük
+                        '#4BC0C0'  // Maske
+                    ],
+                    borderColor: '#fff',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                cutout: '60%',
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Kişisel Koruyucu Donanım Dağılımı'
+                    }
+                }
+            }
+        });
+    </script>
+}
+
+<div class="summary">
+    <h2>🛡️ KKD Tespit Sonuçları</h2>
+    <p><strong>Toplam Tespit:</strong> @ViewBag.TotalPeople</p>
+    <p><strong>Kask:</strong> @ViewBag.Hardhats</p>
+    <p><strong>Yelek:</strong> @ViewBag.Vests</p>
+    <p><strong>Gözlük:</strong> @ViewBag.Goggles</p>
+    <p><strong>Maske:</strong> @ViewBag.Masks</p>
+</div>
+
+<div class="chart-container">
+    <canvas id="kkdDonutChart"></canvas>
+</div>
+<h2 class="mt-6 text-lg font-bold text-center">Tahmin Sonucu</h2>
+ <div class="col-md-6">
+        <img src="~/uploads/annotated_image.jpg?@DateTime.UtcNow.Ticks" class="img-fluid rounded shadow" />
+    </div>
+
+
+
