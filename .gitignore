@@ -3,3 +3,22 @@ bin/
 obj/
 *.db
 __pycache__/
+# Python sanal ortamları
+myenv/
+myenv311/
+venv/
+.Python/
+
+# Çıktı ve geçici dosyalar
+annotated_output.jpeg
+temp_uploaded_image.jpg
+wwwroot/uploads/ # Eğer yüklenen dosyaları Git'e eklemek istemiyorsan
+
+# IDE ve işletim sistemi özel dosyaları (isteğe bağlı)
+.vscode/
+.idea/
+*.log
+*.bin
+*.obj
+[Bb]in/
+[Oo]bj/
