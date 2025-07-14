@@ -1,6 +1,6 @@
-﻿/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
+﻿/* * Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
-
+/*
 a.navbar-brand {
   white-space: normal;
   text-align: center;
@@ -46,3 +46,109 @@ button.accept-policy {
   white-space: nowrap;
   line-height: 60px;
 }
+ */
+
+
+     body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #eef2f6; /* Dashboard arka plan rengiyle uyumlu */
+            display: flex;
+            flex-direction: column; /* İçeriği dikeyde hizala */
+            justify-content: flex-start; /* İçeriği yukarıdan başlat */
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+        .dashboard-header {
+            background-color: #2c3e50; /* Koyu başlık */
+            color: #ffffff;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-size: 1.8rem;
+            font-weight: 700;
+            width: 100%; /* Tam genişlik */
+            margin-bottom: 2rem; /* Aşağıdan boşluk */
+        }
+        .dashboard-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* İçeriği yukarıdan hizala */
+            flex-grow: 1; /* Kalan alanı kapla */
+            width: 100%;
+            padding: 0 2rem 2rem 2rem; /* Yan ve alt boşluklar */
+            max-width: 1400px; /* Maksimum genişlik */
+        }
+        .upload-card { /* upload-container yerine upload-card kullandık */
+            background-color: #ffffff;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); /* Daha belirgin gölge */
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            border: 1px solid #e0e0e0;
+            margin-top: 2rem; /* Dashboard container içinde yukarıdan boşluk */
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 1.5rem;
+            font-size: 2.2rem;
+            font-weight: 600;
+        }
+        .form-group {
+            margin-bottom: 2rem;
+        }
+        .form-control-file {
+            display: block;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 1.1rem;
+            border: 2px dashed #a0a0a0;
+            border-radius: 10px;
+            background-color: #f8f8f8;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #555;
+        }
+        .form-control-file:hover {
+            border-color: #007bff;
+            background-color: #e9f5ff;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        .alert-danger {
+            color: #dc3545;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            padding: 0.75rem 1.25rem;
+            margin-top: 1rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+
+        /* Responsive ayarlar */
+        @media (max-width: 768px) {
+            .dashboard-header {
+                font-size: 1.5rem;
+                padding: 1rem;
+            }
+            .upload-card {
+                padding: 1.5rem;
+                margin-top: 1rem;
+            }
+        }

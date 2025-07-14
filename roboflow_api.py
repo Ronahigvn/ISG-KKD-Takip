@@ -112,7 +112,7 @@ async def analyze_image(file: UploadFile = File(...)):
    }
  
  """
-from fastapi import FastAPI, UploadFile, File
+""" from fastapi import FastAPI, UploadFile, File
 from fastapi.responses import JSONResponse
 from inference_sdk import InferenceHTTPClient
 import shutil, os
@@ -170,6 +170,62 @@ async def analyze_image(file: UploadFile = File(...)):
         if os.path.exists(temp_path):
             os.remove(temp_path)
 
+
+@app.get("/annotated-image/")
+async def get_annotated_image():
+    return FileResponse("annotated_output.jpeg", media_type="image/jpeg")
+ """
+from fastapi import FastAPI, UploadFile, File
+from fastapi.responses import JSONResponse, FileResponse
+from fastapi.middleware.cors import CORSMiddleware
+from inference_sdk import InferenceHTTPClient
+import shutil, os
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+CLIENT = InferenceHTTPClient(
+    api_url="https://serverless.roboflow.com",
+    api_key="1nP8NxJMP9QsCHjudTOy"
+)
+
+MODEL_ID = "personal-protective-equipment-combined-model/8"
+
+@app.post("/analyze/")
+async def analyze_image(file: UploadFile = File(...)):
+    temp_path = f"temp_{file.filename}"
+    with open(temp_path, "wb") as buf:
+        shutil.copyfileobj(file.file, buf)
+
+    try:
+        result = CLIENT.infer(temp_path, model_id=MODEL_ID)
+        preds = result.get("predictions", [])
+
+        def count(cls): return sum(1 for p in preds if p["class"].lower() == cls)
+
+        payload = {
+            "total_predictions": len(preds),
+            "hardhats":  count("hardhat"),
+            "vests":     count("safety vest"),
+            "goggles":   count("goggles"),
+            "masks":     count("mask")
+        }
+
+        return JSONResponse(content=payload)
+
+    except Exception as ex:
+        return JSONResponse(status_code=500, content={"error": str(ex)})
+
+    finally:
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
 
 @app.get("/annotated-image/")
 async def get_annotated_image():

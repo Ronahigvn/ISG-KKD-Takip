@@ -5,6 +5,7 @@
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
+       "launchUrl": "Rapor/Index",
       "applicationUrl": "http://localhost:5170",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
@@ -19,5 +20,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     }
+
   }
 }
+

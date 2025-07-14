@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿@* <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -48,5 +48,115 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+ *@
+@* 
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ISGKkdTakip</title>
+    
+    <!-- Bootstrap CSS (örnek) -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <!-- Kendi özel CSS'leriniz veya view'lardan gelen stiller için yer -->
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <header>
+        <!-- Ortak navigasyon çubuğu veya başlık buraya gelebilir -->
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ISGKkdTakip</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Görsel Yükle</a>
+                        </li>
+                        <!-- Diğer menü öğeleri buraya eklenebilir -->
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container-fluid"> <!-- Daha geniş layout için container-fluid -->
+        <main role="main" class="pb-3">
+            @RenderBody() <!-- View'ın içeriği buraya yerleştirilecek -->
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; @DateTime.Now.Year - ISGKkdTakip - <a asp-area="" asp-controller="Home" asp-action="Privacy">Gizlilik</a>
+        </div>
+    </footer>
+
+    <!-- Ortak JavaScript kütüphaneleri (örnek) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- View'lardan gelen özel scriptler için yer -->
+    @RenderSection("Scripts", required: false)
+</body>
+</html> *@
+
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ISGKkdTakip</title>
+    
+    <!-- Bootstrap CSS (örnek) -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <!-- Kendi özel CSS'leriniz veya view'lardan gelen stiller için yer -->
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    @* <header>
+        <!-- Ortak navigasyon çubuğu veya başlık buraya gelebilir -->
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ISGKkdTakip</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Görsel Yükle</a>
+                        </li>
+                        <!-- Diğer menü öğeleri buraya eklenebilir -->
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header> *@
+
+    <div class="container-fluid"> <!-- Daha geniş layout için container-fluid -->
+        <main role="main" class="pb-3">
+            @RenderBody() <!-- View'ın içeriği buraya yerleştirilecek -->
+        </main>
+    </div>
+
+  
+
+    <!-- Ortak JavaScript kütüphaneleri (örnek) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- View'lardan gelen özel scriptler için yer -->
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

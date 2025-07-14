@@ -22,3 +22,4 @@ wwwroot/uploads/ # Eğer yüklenen dosyaları Git'e eklemek istemiyorsan
 *.obj
 [Bb]in/
 [Oo]bj/
+.fake
