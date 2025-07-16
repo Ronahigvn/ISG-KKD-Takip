@@ -1,12 +1,13 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace ISGKkdTakip.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class YeniKurulum : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,9 +16,10 @@ namespace ISGKkdTakip.Migrations
                 name: "Mekanlar",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Ad = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Ad = table.Column<string>(type: "text", nullable: false),
+                    Aciklama = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -28,9 +30,10 @@ namespace ISGKkdTakip.Migrations
                 name: "Uygunsuzluklar",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Tip = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Ad = table.Column<string>(type: "text", nullable: false),
+                    Aciklama = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -41,13 +44,13 @@ namespace ISGKkdTakip.Migrations
                 name: "Raporlar",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    MekanId = table.Column<int>(type: "INTEGER", nullable: false),
-                    UygunsuzlukId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ToplamKisi = table.Column<int>(type: "INTEGER", nullable: false),
-                    EkipmanKullanan = table.Column<int>(type: "INTEGER", nullable: false),
-                    Tarih = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    MekanId = table.Column<int>(type: "integer", nullable: false),
+                    UygunsuzlukId = table.Column<int>(type: "integer", nullable: false),
+                    ToplamKisi = table.Column<int>(type: "integer", nullable: false),
+                    EkipmanKullanan = table.Column<int>(type: "integer", nullable: false),
+                    Tarih = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {

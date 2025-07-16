@@ -1,0 +1,224 @@
+@* @{
+    ViewData["Title"] = "KKD Raporu";
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KKD Tahmin Raporu</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      max-width: 700px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .stats {
+      margin-bottom: 40px;
+      font-size: 18px;
+    }
+    .stats p {
+      margin: 10px 0;
+    }
+    canvas {
+      background: #fafafa;
+      border-radius: 8px;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>📊 KKD Tespit Raporu</h1>
+
+   <div class="bg-white rounded-lg shadow-md p-6">
+        <p><strong>Toplam Tespit Edilen Kişi:</strong> @ViewBag.TotalPeople</p>
+        <p><strong>Kask Kullanan:</strong> @ViewBag.Hardhats</p>
+        <p><strong>Yelek Giyen:</strong> @ViewBag.Vests</p>
+        <p><strong>Gözlük Takan:</strong> @ViewBag.Goggles</p>
+     
+    </div>
+
+  <canvas id="chart" width="400" height="200"></canvas>
+
+  <script>
+    const ctx = document.getElementById('chart').getContext('2d');
+    const chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['KKD Kullanan', 'KKD Kullanmayan'],
+        datasets: [{
+          label: 'Kişi Sayısı',
+          data: [@ViewBag.WithKkd, @ViewBag.WithoutKkd],
+          backgroundColor: ['#4caf50', '#f44336']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false }
+          
+        },
+        scales: {
+          y: { beginAtZero: true }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
+ *@
+@* 
+@{
+    ViewData["Title"] = "Görsel Yükle";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Layout dosyanızın yolu
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Index.cshtml.css" />
+}
+
+<div class="dashboard-header">
+    KKD Tespit Sistemi Dashboard
+</div>
+
+<div class="dashboard-container">
+    <div class="upload-card">
+        <h1>📸 Görsel Yükle</h1>
+        <p class="text-muted">Analiz etmek istediğiniz görseli seçin ve yükleyin.</p>
+
+        <form asp-controller="ImagePrediction" asp-action="AnalyzeImage" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="file" class="sr-only">Görsel Seç</label>
+                <input type="file" name="file" id="file" class="form-control-file" accept="image/*" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Görseli Analiz Et</button>
+        </form>
+
+        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+        {
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.ErrorMessage
+            </div>
+        }
+    </div>
+</div>
+ *@
+@* 
+ @{
+    ViewData["Title"] = "Görsel Analiz";
+}
+
+@model ISGKkdTakip.Models.ViewModels.ImageUploadViewModel
+
+
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+  <form asp-action="AnalyzeImage" asp-controller="ImagePrediction" method="post" enctype="multipart/form-data"></form>
+ <form asp-action="AnalyzeImage" enctype="multipart/form-data" method="post">
+    <select asp-for="SelectedMekanId" asp-items="Model.MekanList" class="form-control" required></select>
+    <input type="file" asp-for="File" class="form-control" required />
+    <button type="submit" class="btn btn-primary">Gönder</button>
+</form>
+
+    <div>
+    <div class="container mx-auto p-6 bg-white rounded-lg shadow-md">
+        <h1 class="text-2xl font-bold text-center mb-6">Görsel Yükleme ve Analiz</h1>
+        
+        <form asp-controller="ImagePrediction" asp-action="AnalyzeImage" method="post" enctype="multipart/form-data">
+            <div class="mb-4">
+                <label for="file" class="block text-sm font-medium text-gray-700">Görsel Seçin:</label>
+                <input type="file" id="file" name="file" accept="image/*" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <button type="submit" class="w-full bg-blue-500 text-white font-bold py-2 rounded hover:bg-blue-600">Analiz Et</button>
+        </form>
+    </div>
+</body>
+</html> *@
+@* 
+
+@model ISGKkdTakip.Models.ViewModels.ImageUploadViewModel
+
+@{
+    ViewData["Title"] = "Görsel Analiz";
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-6 bg-white rounded-lg shadow-md">
+        <h1 class="text-2xl font-bold text-center mb-6">Görsel Yükleme ve Analiz</h1>
+
+        <form asp-controller="ImagePrediction" asp-action="AnalyzeImage" method="post" enctype="multipart/form-data">
+            <div class="mb-4">
+                <label asp-for="SelectedMekanId" class="block text-sm font-medium text-gray-700">Mekan Seçin:</label>
+                <select asp-for="SelectedMekanId" asp-items="Model.MekanList" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500 focus:border-blue-500"></select>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="File" class="block text-sm font-medium text-gray-700">Görsel Seçin:</label>
+                <input asp-for="File" type="file" accept="image/*" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500 focus:border-blue-500" />
+            </div>
+
+            <button type="submit" class="w-full bg-blue-500 text-white font-bold py-2 rounded hover:bg-blue-600">Analiz Et</button>
+        </form>
+    </div>
+</body>
+</html>
+ *@
+ 
+ @model ISGKkdTakip.Models.ViewModels.ImageUploadViewModel
+
+@{
+    ViewData["Title"] = "Görsel Analiz";
+}
+ 
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-6 bg-white rounded-lg shadow-md">
+        <h1 class="text-2xl font-bold text-center mb-6">Görsel Yükleme ve Analiz</h1>
+
+        <form asp-controller="ImagePrediction" asp-action="AnalyzeImage" method="post" enctype="multipart/form-data">
+            <div class="mb-4">
+                <label asp-for="SelectedMekanId" class="block text-sm font-medium text-gray-700">Mekan Seçin:</label>
+                <select asp-for="SelectedMekanId" asp-items="Model.MekanList" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500 focus:border-blue-500"></select>
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="File" class="block text-sm font-medium text-gray-700">Görsel Seçin:</label>
+                <input asp-for="File" type="file" accept="image/*" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500 focus:border-blue-500" />
+            </div>
+
+            <button type="submit" class="w-full bg-blue-500 text-white font-bold py-2 rounded hover:bg-blue-600">Analiz Et</button>
+        </form>
+    </div>
+</body>
+</html>
+ 

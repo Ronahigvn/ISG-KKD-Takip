@@ -879,21 +879,21 @@
     <a asp-controller="Home" asp-action="Index" class="btn-back">Yeni Bir Görsel Analiz Et</a>
 </div> *@
 @{
-    ViewData["Title"] = "KKD Tespit Dashboard";
+  @*   ViewData["Title"] = "KKD Tespit Dashboard"; *@
     // Bu sayfa artık kendi başına bir HTML belgesi olduğu için Layout kullanmıyor.
     // Layout = "~/Views/Shared/_Layout.cshtml"; // Bu satırı kaldırdık
 }
 
-<!DOCTYPE html>
+@* <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
+    <title>@ViewData["Title"]</title> *@
     <!-- Tailwind CSS'i kullanmak için -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <style>
-        /* Genel Arka Plan ve Font */
+   @*  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style> *@
+      @*   /* Genel Arka Plan ve Font */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #eef2f6; /* Modern Açık Gri Arka Plan */
@@ -902,8 +902,8 @@
             display: flex;
             flex-direction: column;
             margin: 0;
-        }
-
+        } *@
+@* 
         /* Dashboard Başlığı */
         .dashboard-header {
             background-color: #34495e; /* Koyu Gri Başlık */
@@ -1009,7 +1009,7 @@
         .btn-back:hover {
             background-color: #5a6268;
             transform: translateY(-2px);
-        }
+        } *@
 @* 
         /* Küçük ekranlar için responsive ayarlar */
         @media (max-width: 1200px) {
@@ -1035,7 +1035,7 @@
                 padding: 1.5rem;
             }
         } *@
-    </style>
+   @*  </style>
 </head>
 <body>
     <div class="dashboard-header">
@@ -1045,12 +1045,12 @@
     <div class="dashboard-main-content">
         <div class="dashboard-card summary-card">
             <h2>📊 Tespit Özeti</h2>
-            <div style="width: 100%;">
+            <div style="width: 100%;"> *@
                @*  <div class="summary-item total">
                     <strong>Toplam Tespit Edilen Kişi Sayısı:</strong>
                     <span>@(ViewBag.TotalPeople ?? "Veri Yok")</span>
                 </div> *@
-                <div class="summary-item">
+                @* <div class="summary-item">
                     <strong>Kask Sayısı:</strong>
                     <span>@(ViewBag.Hardhats ?? 0)</span>
                 </div>
@@ -1175,5 +1175,65 @@
             }
         });
     </script>
+</body>
+</html>
+ *@
+
+@model ISGKkdTakip.Models.ViewModels.ImageUploadViewModel
+
+ @{
+    ViewData["Title"] = "Sonuç";
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <title>Analiz Sonucu</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body class="bg-gray-100 p-6">
+
+    <div class="max-w-5xl mx-auto bg-white p-8 rounded-lg shadow">
+        <h1 class="text-2xl font-bold mb-6">📊 KKD Tespit Sonucu</h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+                <ul class="text-lg space-y-2">
+                    <li><strong>Kask:</strong> @ViewBag.Hardhats</li>
+                    <li><strong>Yelek:</strong> @ViewBag.Vests</li>
+                    <li><strong>Gözlük:</strong> @ViewBag.Goggles</li>
+                    <li><strong>Maske:</strong> @ViewBag.Masks</li>
+                </ul>
+            </div>
+<div class="w-1/2 mx-auto my-10">
+   
+            <canvas id="donutChart" style="max-height: 400px; width: 100%;"></canvas>
+
+</div>
+
+            <div>
+                @if (ViewBag.ProcessedImagePath != null)
+                {
+                    <img src="@ViewBag.ProcessedImagePath?t=@DateTime.UtcNow.Ticks" alt="İşlenmiş Görsel" class="rounded shadow-lg" />
+                }
+                else
+                {
+                    <p class="text-red-500">İşlenmiş görsel bulunamadı.</p>
+                }
+            </div>
+        </div>
+
+        <div class="mt-6">
+            <a asp-controller="ImagePrediction" asp-action="Index" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-900">
+                Yeni Görsel Yükle
+            </a>
+        </div>
+    </div>
+ 
+<script src="~/js/kkdChart.js"></script>
+
 </body>
 </html>

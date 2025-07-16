@@ -7,10 +7,10 @@ namespace ISGKkdTakip.Models
     {
         [Key]
         public int Id { get; set; }
-        
+
         [Required]
         public string Ad { get; set; }
-        
+
         public string Aciklama { get; set; }
 
         // İlişki: Bir mekanın birden fazla raporu olabilir

@@ -594,7 +594,22 @@ for i in range(len(detections)):
 
 cv2.imwrite(output_image_path, annotated_image)
 
+# --- KKE ve Kişi Sayım Sonuçlarını C# tarafının okuyabileceği formatta yazdır ---
+print("\n--- KKE ve Kişi Sayım Sonuçları ---")
 for ppe_type, count in ppe_counts.items():
-    print(f"{ppe_type}: {count}")
+    display_name = ppe_type.replace('_', ' ').title() # Örneğin "hardhat" -> "Hardhat"
+    print(f"{display_name}: {count}")
+""" 
+# Toplam kişi sayısını hesapla (basit toplama)
+toplam_kisi = sum(ppe_counts.values())
+print(f"toplamkisi: {toplam_kisi}") """
+
 
 print(f"✅ Kutulu görsel kaydedildi → {output_image_path}")
+
+
+
+
+
+
+   

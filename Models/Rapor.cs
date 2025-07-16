@@ -19,7 +19,10 @@ namespace ISGKkdTakip.Models
 
         public int ToplamKisi { get; set; }
         public int EkipmanKullanan { get; set; }
+[DataType(DataType.Date)]
+       public DateTime Tarih { get; set; } = DateTime.UtcNow;
 
-        public DateTime Tarih { get; set; } = DateTime.Now;
+    
+
     }
 }

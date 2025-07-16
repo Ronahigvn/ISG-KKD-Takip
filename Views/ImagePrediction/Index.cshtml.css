@@ -1,0 +1,92 @@
+ body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #eef2f6; /* Açık Gri Arka Plan */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* İçeriği dikeyde ortala */
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+        .upload-container {
+            background-color: #ffffff; /* Beyaz kutu */
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); /* Hafif gölge */
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            border: 1px solid #e0e0e0;
+        }
+        h1 { /* Ana başlık için h1 kullanıldı */
+            color: #e84393; /* Toz Pembe Başlık */
+            margin-bottom: 1.5rem;
+            font-size: 2.2rem;
+            font-weight: 600;
+        }
+        .form-group {
+            margin-bottom: 2rem;
+            text-align: left; /* Etiketleri sola hizala */
+        }
+        .form-label {
+            display: block;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #2c3e50; /* Koyu Gri Etiket Metni */
+            margin-bottom: 0.5rem;
+        }
+        .form-control-file, .form-control-select {
+            display: block;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 1.1rem;
+            border: 2px dashed #a0a0a0; /* Kesikli kenarlık */
+            border-radius: 10px;
+            background-color: #f8f8f8;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #555;
+        }
+        .form-control-file:hover, .form-control-select:hover {
+            border-color: #e84393; /* Pembe vurgu */
+            background-color: #ffeef2; /* Açık pembe arka plan */
+        }
+        .btn-primary {
+            background-color: #e84393; /* Toz Pembe Buton */
+            color: white;
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 10px rgba(232, 67, 147, 0.3); /* Pembe gölge */
+        }
+        .btn-primary:hover {
+            background-color: #d43a85; /* Daha koyu pembe */
+            transform: translateY(-2px);
+        }
+        .alert-danger {
+            color: #dc3545;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            padding: 0.75rem 1.25rem;
+            margin-top: 1rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+
+        /* Responsive ayarlar */
+        @media (max-width: 768px) {
+            .upload-container {
+                padding: 1.5rem;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            .form-control-file, .form-control-select, .btn-primary {
+                font-size: 1rem;
+                padding: 0.6rem 1.5rem;
+            }
+        }

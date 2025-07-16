@@ -1,14 +1,17 @@
 using ISGKkdTakip.Data;
 using Microsoft.EntityFrameworkCore;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // MVC ve API controllerları için
 builder.Services.AddControllersWithViews();
 
 // DbContext için bağlantı dizesi
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlite("Data Source=isg.db"));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
 // IHttpClientFactory kullanımı için HttpClient servisini ekle
 builder.Services.AddHttpClient();
