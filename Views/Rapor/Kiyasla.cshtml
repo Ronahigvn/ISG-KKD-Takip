@@ -1,0 +1,302 @@
+@* @{
+    ViewData["Title"] = "Rapor Kıyaslama";
+    var farklar = ViewBag.Farklar as Dictionary<string, int>;
+    var mekanAdi = ViewBag.MekanAdi as string;
+    var mesaj = ViewBag.Mesaj as string;
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <title>Rapor Kıyaslama</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>@mekanAdi mekanı için son iki rapor kıyaslaması</h1>
+
+    @if (!string.IsNullOrEmpty(mesaj))
+    {
+        <p>@mesaj</p>
+    }
+    else if (farklar != null)
+    {
+        <canvas id="compareChart" width="400" height="400"></canvas>
+
+        <script>
+            const labels = Object.keys(@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(farklar.Keys)));
+            const data = Object.values(@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(farklar.Values)));
+
+            const ctx = document.getElementById('compareChart').getContext('2d');
+
+            const chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Değişim (Bugün - Önceki)',
+                        data: data,
+                        backgroundColor: data.map(val => val >= 0 ? 'rgba(75, 192, 192, 0.7)' : 'rgba(255, 99, 132, 0.7)')
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                // Negatif değerler için eksen ayarı
+                                callback: function(value) {
+                                    return value;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
+    }
+    else
+    {
+        <p>Veri bulunamadı.</p>
+    }
+
+    <a asp-controller="ImagePrediction" asp-action="Index">Geri Dön</a>
+</body>
+</html>
+ *@
+
+@* 
+ @{
+    var farklar = ViewBag.Farklar as Dictionary<string, int>;
+    var mekanAdi = ViewBag.MekanAdi as string ?? "Bilinmeyen Mekan";
+
+    // Örnek iki tarih için labels oluştur (gerçek tarihleri ver istersen)
+    var tarihLabels = new[] { "Önceki Rapor", "Bugün" };
+
+    // Son iki raporun değerlerini ViewBag'den veya modelden almak gerekir
+    // Burada örnek olarak varsayıyorum ViewBag'de var:
+    var ekipmanKullananlar = ViewBag.EkipmanKullananlar as List<int> ?? new List<int> { 0, 0 };
+    var toplamKisiler = ViewBag.ToplamKisiler as List<int> ?? new List<int> { 0, 0 };
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <title>@mekanAdi - Kıyaslama Sonucu</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="p-8 bg-gray-50">
+
+    <h1 class="text-center text-2xl font-bold mb-6">@mekanAdi için Kıyaslama</h1>
+
+    <div class="max-w-xl mx-auto bg-white p-6 rounded shadow">
+        <canvas id="lineChart" width="400" height="200"></canvas>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('lineChart').getContext('2d');
+
+        const data = {
+            labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(tarihLabels)),
+            datasets: [
+                {
+                    label: 'Ekipman Kullanan',
+                    data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ekipmanKullananlar)),
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    fill: true,
+                    tension: 0.3,
+                },
+                {
+                    label: 'Toplam Kişi',
+                    data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(toplamKisiler)),
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    fill: true,
+                    tension: 0.3,
+                }
+            ]
+        };
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        };
+
+        new Chart(ctx, config);
+    </script>
+</body>
+</html>
+ *@
+
+@*  @{
+    var farklar = ViewBag.Farklar as Dictionary<string, int>;
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.MekanAdi Kıyaslama</title>
+    <style>
+        .equip-box {
+            width: 100px;
+            height: 100px;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            text-align: center;
+            line-height: 100px;
+            border-radius: 10px;
+            margin: 20px auto;
+            position: relative;
+            transition: transform 1s ease;
+        }
+        .kask { background-color: #e91e63; } /* Pembe */
+        .yelek { background-color: #4caf50; } /* Yeşil */
+        .gozluk { background-color: #ffeb3b; color: black; } /* Sarı */
+
+        /* Yukarı çıkış ve aşağı iniş için sınıflar */
+        .up {
+            transform: translateY(-50px);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.2);
+        }
+        .down {
+            transform: translateY(50px);
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>@ViewBag.MekanAdi için Kıyaslama</h1>
+
+    <div class="equip-box kask" id="kaskBox">
+        Kask: @farklar["Kask"]
+    </div>
+
+    <div class="equip-box yelek" id="yelekBox">
+        Yelek: @(farklar.ContainsKey("Yelek") ? farklar["Yelek"] : 0)
+    </div>
+
+    <div class="equip-box gozluk" id="gozlukBox">
+        Gözlük: @(farklar.ContainsKey("Gozluk") ? farklar["Gozluk"] : 0)
+    </div>
+
+    <script>
+        // Kutulara hareketi fark değerine göre verelim:
+        function animateBox(id, fark) {
+            const box = document.getElementById(id);
+            if (!box) return;
+
+            if (fark > 0) {
+                box.classList.add('up');
+                box.classList.remove('down');
+            } else if (fark < 0) {
+                box.classList.add('down');
+                box.classList.remove('up');
+            } else {
+                box.classList.remove('up');
+                box.classList.remove('down');
+            }
+        }
+
+        // Backend'den gelen farkları JS değişkenine aktaralım
+        const farklar = {
+            kask: @((farklar.ContainsKey("Kask") ? farklar["Kask"] : 0)),
+            yelek: @((farklar.ContainsKey("Yelek") ? farklar["Yelek"] : 0)),
+            gozluk: @((farklar.ContainsKey("Gozluk") ? farklar["Gozluk"] : 0))
+        };
+
+        animateBox("kaskBox", farklar.kask);
+        animateBox("yelekBox", farklar.yelek);
+        animateBox("gozlukBox", farklar.gozluk);
+
+    </script>
+
+</body>
+</html>
+ *@
+@{
+    ViewData["Title"] = "Ekipman ve Kişi Kıyaslaması";
+    var mekanAdi = ViewBag.MekanAdi ?? "Bilinmeyen Mekan";
+    var farklar = ViewBag.Farklar as Dictionary<string, int>;
+    var onceki = ViewBag.Onceki;
+    var bugun = ViewBag.Bugun;
+}
+
+<h2>@mekanAdi - Son 2 Rapor Kıyaslaması</h2>
+
+@if(ViewBag.Mesaj != null)
+{
+    <p style="color:red;">@ViewBag.Mesaj</p>
+}
+else
+{
+    <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Özellik</th>
+                <th>Önceki (@onceki?.Tarih.ToString("yyyy-MM-dd"))</th>
+                <th>Bugün (@bugun?.Tarih.ToString("yyyy-MM-dd"))</th>
+                <th>Fark</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Ekipman Kullanan</td>
+                <td>@onceki?.EkipmanKullanan</td>
+                <td>@bugun?.EkipmanKullanan</td>
+                <td style="color:@(farklar["EkipmanKullanan"] >= 0 ? "green" : "red")">
+                    @(farklar["EkipmanKullanan"] >= 0 ? "+" : "")@farklar["EkipmanKullanan"]
+                </td>
+            </tr>
+            
+        </tbody>
+    </table>
+
+    <canvas id="barChart" style="max-width:600px; margin-top:40px;"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('barChart').getContext('2d');
+
+        const data = {
+            labels: ['Ekipman Kullanan', 'Toplam Kişi'],
+            datasets: [
+                {
+                    label: '@onceki?.Tarih.ToString("yyyy-MM-dd")',
+                    data: [@onceki?.EkipmanKullanan, @onceki?.ToplamKisi],
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)'
+                },
+                {
+                    label: '@bugun?.Tarih.ToString("yyyy-MM-dd")',
+                    data: [@bugun?.EkipmanKullanan, @bugun?.ToplamKisi],
+                    backgroundColor: 'rgba(255, 99, 132, 0.5)'
+                }
+            ]
+        };
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+    </script>
+}

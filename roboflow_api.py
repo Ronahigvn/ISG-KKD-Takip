@@ -1,188 +1,15 @@
-""" from fastapi import FastAPI, File, UploadFile
-from fastapi.responses import JSONResponse
-from inference_sdk import InferenceHTTPClient
-import shutil
-import os
-
-app = FastAPI()
-
-CLIENT = InferenceHTTPClient(
-    api_url="https://serverless.roboflow.com",
-    api_key="1nP8NxJMP9QsCHjudTOy"
-)
-
-@app.get("/")
-async def root():
-    return {"message": "Roboflow API is live!"}
-
-
-@app.post("/predict/")
-async def predict(file: UploadFile = File(...)):
-    try:
-        # Geçici olarak resmi kaydet
-        file_path = f"temp_{file.filename}"
-        with open(file_path, "wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
-
-        # Tahmin yap
-        result = CLIENT.infer(file_path, model_id="kaskikamizelkibudowa/4")
-
-        # Geçici resmi sil
-        os.remove(file_path)
-
-        return JSONResponse(content=result)
-
-    except Exception as e:
-        return JSONResponse(status_code=500, content={"error": str(e)})
- """
-""" from fastapi import FastAPI, UploadFile, File
-from inference_sdk import InferenceHTTPClient
-import shutil
-
-
-app = FastAPI()
-
-@app.get("/")
-async def root():
-    return {"message": "Roboflow API is live!"}
-
-
-# Roboflow API bilgileri
-CLIENT = InferenceHTTPClient(
-    api_url="https://serverless.roboflow.com",
-    api_key="1nP8NxJMP9QsCHjudTOy"
-)
-
-@app.post("/analyze/")
-async def analyze_image(file: UploadFile = File(...)):
-    # Dosyayı kaydet
-    with open(file.filename, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
-
-    # Roboflow ile analiz et
-    result = CLIENT.infer(file.filename, model_id="kaskikamizelkibudowa/4") 
-    result = CLIENT.infer(file.filename, model_id="personal-protective-equipment-combined-model/8")
-
-    return result
- """
-
-""" from fastapi import FastAPI, UploadFile, File
-from inference_sdk import InferenceHTTPClient
-import shutil
-import os
-
-# 🔽 BURASI: Roboflow istemcisi oluşturuluyor
-CLIENT = InferenceHTTPClient(
-    api_url="https://serverless.roboflow.com",
-    api_key="1nP8NxJMP9QsCHjudTOy"
-)
-
-app = FastAPI()
-
-@app.post("/analyze/")
-async def analyze_image(file: UploadFile = File(...)):
-    # Dosya geçici olarak kaydediliyor
-    file_path = f"temp_{file.filename}"
-    with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
-
-    # 🔽 BURASI: Modelden tahmin alınan kısım
-    result = CLIENT.infer(file_path, model_id="personal-protective-equipment-combined-model/8")
-
-    # Geçici dosya siliniyor
-    os.remove(file_path)
-
-    # Sınıflar sayılıyor
-    classes = [pred["class"] for pred in result["predictions"]]
-    hardhats = classes.count("Hardhat")
-    vests = classes.count("Vest")
-    goggles = classes.count("Goggles")
-    boots = classes.count("Boots")
-  # Cevap dönülüyor
-
-    result = model.predict(image_path, confidence=40, overlap=30).json()
-    preds = result.get("predictions", [])
-
-    return {
-    "total_predictions": len(preds),
-    "hardhats": sum(1 for p in preds if p["class"] == "Hardhat"),
-    "vests": sum(1 for p in preds if p["class"] == "Safety Vest"),
-    "goggles": sum(1 for p in preds if p["class"] == "Goggles"),
-    "masks": sum(1 for p in preds if p["class"] == "Mask"),
-   }
- 
- """
-""" from fastapi import FastAPI, UploadFile, File
-from fastapi.responses import JSONResponse
-from inference_sdk import InferenceHTTPClient
-import shutil, os
-from fastapi.responses import FileResponse
-from fastapi.middleware.cors import CORSMiddleware
-
-app = FastAPI()
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # İstersen sadece ASP.NET portunu yazabilirsin
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-) 
-# ► Roboflow istemcin
-CLIENT = InferenceHTTPClient(
-    api_url="https://serverless.roboflow.com",
-    api_key="1nP8NxJMP9QsCHjudTOy"
-)
-
-MODEL_ID = "personal-protective-equipment-combined-model/8"   # *** tek satırda ayarla ***
-
-@app.post("/analyze/")
-async def analyze_image(file: UploadFile = File(...)):
-    # 1️⃣ – Dosyayı diske kaydet
-    temp_path = f"temp_{file.filename}"
-    with open(temp_path, "wb") as buf:
-        shutil.copyfileobj(file.file, buf)
-
-    try:
-        # 2️⃣ – Roboflow tahmini
-        result = CLIENT.infer(temp_path, model_id=MODEL_ID)
-        preds = result.get("predictions", [])
-
-        # 3️⃣ – Sınıfları say
-        def count(cls):  # küçük yardımcı
-            return sum(1 for p in preds if p["class"].lower() == cls)
-
-        payload = {
-            "total_predictions": len(preds),
-            "hardhats":  count("hardhat"),
-            "vests":     count("safety vest"),     # modelde “Safety Vest”
-            "goggles":   count("goggles"),
-            "masks":     count("mask")
-        }
-
-        return JSONResponse(content=payload)
-
-    except Exception as ex:
-        return JSONResponse(status_code=500, content={"error": str(ex)})
-
-    finally:
-        # 4️⃣ – Geçici dosyayı sil
-        if os.path.exists(temp_path):
-            os.remove(temp_path)
-
-
-@app.get("/annotated-image/")
-async def get_annotated_image():
-    return FileResponse("annotated_output.jpeg", media_type="image/jpeg")
- """
 from fastapi import FastAPI, UploadFile, File
 from fastapi.responses import JSONResponse, FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from inference_sdk import InferenceHTTPClient
 import shutil, os
 
+# FastAPI uygulamasını başlatır
 app = FastAPI()
 
+
+# --- CORS Ayarları ---
+# CORS middleware'i ekler. Bu, farklı bir alan adından (örneğin bir frontend uygulamasından) API'ye istek göndermenizi sağlar.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -191,6 +18,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# --- Roboflow API İstemcisi Ayarları ---
 CLIENT = InferenceHTTPClient(
     api_url="https://serverless.roboflow.com",
     api_key="1nP8NxJMP9QsCHjudTOy"
@@ -198,6 +26,10 @@ CLIENT = InferenceHTTPClient(
 
 MODEL_ID = "personal-protective-equipment-combined-model/8"
 
+
+# --- GÖRSEL ANALİZ ENDPOİNT'İ ---
+# `/analyze/` yoluna gelen POST isteklerini işleyen asenkron fonksiyon
+# Bir görsel dosyası yüklemesini bekler
 @app.post("/analyze/")
 async def analyze_image(file: UploadFile = File(...)):
     temp_path = f"temp_{file.filename}"
@@ -205,11 +37,14 @@ async def analyze_image(file: UploadFile = File(...)):
         shutil.copyfileobj(file.file, buf)
 
     try:
+        # Roboflow API'ye kaydedilen görseli göndererek nesne tespiti tahminlerini alır
         result = CLIENT.infer(temp_path, model_id=MODEL_ID)
+         # Gelen yanıttan 'predictions' anahtarını alır, yoksa boş liste döndürür
         preds = result.get("predictions", [])
 
+        # Her bir KKD türünün sayısını hesaplamak için yardımcı bir iç fonksiyon tanımlar
         def count(cls): return sum(1 for p in preds if p["class"].lower() == cls)
-
+        # Yanıt olarak döndürülecek veri yükünü (payload) oluşturur
         payload = {
             "total_predictions": len(preds),
             "hardhats":  count("hardhat"),
@@ -217,7 +52,7 @@ async def analyze_image(file: UploadFile = File(...)):
             "goggles":   count("goggles"),
             "masks":     count("mask")
         }
-
+          # JSON formatında başarılı bir yanıt döndürür
         return JSONResponse(content=payload)
 
     except Exception as ex:
@@ -226,7 +61,11 @@ async def analyze_image(file: UploadFile = File(...)):
     finally:
         if os.path.exists(temp_path):
             os.remove(temp_path)
-
+# --- ETİKETLENMİŞ GÖRSELİ DÖNDÜRME ENDPOİNT'İ ---
+# `/annotated-image/` yoluna gelen GET isteklerini işleyen asenkron fonksiyon
+# (Not: Bu endpoint, tahminlerin çizildiği bir görselin varlığını varsayar.
+#  Normalde bu görselin, `analyze_image` endpoint'i içinde veya ayrı bir işlemle
+#  oluşturulup diske kaydedilmesi gerekir. Şu anki `analyze_image` bu kaydetme işlemini yapmıyor.)
 @app.get("/annotated-image/")
 async def get_annotated_image():
     return FileResponse("annotated_output.jpeg", media_type="image/jpeg")
