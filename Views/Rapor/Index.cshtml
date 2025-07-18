@@ -13,7 +13,6 @@
             <th class="border border-gray-300 px-4 py-2">Mekan</th>
             <th class="border border-gray-300 px-4 py-2">Uygunsuzluk</th>
             <th class="border border-gray-300 px-4 py-2">Tarih</th>
-            <th class="border border-gray-300 px-4 py-2">Toplam Kişi</th>
             <th class="border border-gray-300 px-4 py-2">Ekipman Kullanan</th>
         </tr>
     </thead>
@@ -25,7 +24,6 @@
                 <td class="border border-gray-300 px-4 py-2">@item.Mekan?.Ad</td>
                 <td class="border border-gray-300 px-4 py-2">@item.Uygunsuzluk?.Ad</td>
                 <td class="border border-gray-300 px-4 py-2">@item.Tarih.ToShortDateString()</td>
-                <td class="border border-gray-300 px-4 py-2">@item.ToplamKisi</td>
                 <td class="border border-gray-300 px-4 py-2">@item.EkipmanKullanan</td>
             </tr>
         }

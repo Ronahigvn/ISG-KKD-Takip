@@ -19,7 +19,7 @@ namespace ISGKkdTakip.Models
         public int UygunsuzlukId { get; set; } // Raporun ilişkili olduğu Uygunsuzluk nesnesi
         public Uygunsuzluk Uygunsuzluk { get; set; }
 
-        public int ToplamKisi { get; set; }// Görseldeki toplam kişi sayısı
+        
         public int EkipmanKullanan { get; set; }// Görseldeki ekipman (KKD) kullanan kişi sayısını belirtir.
 [DataType(DataType.Date)]
        public DateTime Tarih { get; set; } = DateTime.UtcNow;// Raporun oluşturulduğu tarihi ve saati belirtir.

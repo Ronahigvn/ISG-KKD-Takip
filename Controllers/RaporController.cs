@@ -19,15 +19,15 @@ namespace ISGKkdTakip.Controllers
         // GET: Rapor/Index — Rapor listesini ve grafik için verileri göster
         public IActionResult Index()
         {
-            // Veritabanından toplam kişi ve ekipman kullanan kişi sayılarını al
-            var toplam = _context.Raporlar.Sum(r => r.ToplamKisi);
+            // Veritabanından ekipman kullanan kişi sayılarını al
+           
             var kullanan = _context.Raporlar.Sum(r => r.EkipmanKullanan);
-            var kullanmayan = toplam - kullanan;
+            
 
             // Bu verileri ViewBag aracılığıyla view'a gönder
-            ViewBag.TotalPeople = toplam;
+            
             ViewBag.WithKkd = kullanan;
-            ViewBag.WithoutKkd = kullanmayan;
+            
 
             // Tüm raporları al ve view'a model olarak gönder
             var raporlar = _context.Raporlar.ToList();
@@ -46,7 +46,7 @@ namespace ISGKkdTakip.Controllers
 
             var rapor = new Rapor
             {
-                ToplamKisi = toplamKisi,
+                
                 EkipmanKullanan = ekipmanKullanan,
                 // Tarih alanı için varsayılan değer ataması yapılmalı veya modelde required olmamalıdır.
                 Tarih = System.DateTime.Now, // Örnek: Mevcut tarihi ata

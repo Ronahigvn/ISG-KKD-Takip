@@ -236,6 +236,9 @@
     var bugun = ViewBag.Bugun;
 }
 
+<!-- Geri butonu -->
+<button onclick="history.back()" style="margin-bottom: 20px;">← Geri</button>
+
 <h2>@mekanAdi - Son 2 Rapor Kıyaslaması</h2>
 
 @if(ViewBag.Mesaj != null)
@@ -262,7 +265,6 @@ else
                     @(farklar["EkipmanKullanan"] >= 0 ? "+" : "")@farklar["EkipmanKullanan"]
                 </td>
             </tr>
-            
         </tbody>
     </table>
 
@@ -273,16 +275,16 @@ else
         const ctx = document.getElementById('barChart').getContext('2d');
 
         const data = {
-            labels: ['Ekipman Kullanan', 'Toplam Kişi'],
+            labels: ['Ekipman Kullanan'],
             datasets: [
                 {
                     label: '@onceki?.Tarih.ToString("yyyy-MM-dd")',
-                    data: [@onceki?.EkipmanKullanan, @onceki?.ToplamKisi],
+                    data: [@onceki?.EkipmanKullanan],
                     backgroundColor: 'rgba(54, 162, 235, 0.5)'
                 },
                 {
                     label: '@bugun?.Tarih.ToString("yyyy-MM-dd")',
-                    data: [@bugun?.EkipmanKullanan, @bugun?.ToplamKisi],
+                    data: [@bugun?.EkipmanKullanan],
                     backgroundColor: 'rgba(255, 99, 132, 0.5)'
                 }
             ]
